@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainScreen">
+    <fragment
+        android:id="@+id/mainScreen"
+        android:name="uz.infinityandro.taskguidebook.presentation.ui.screens.MainScreen"
+        tools:layout="@layout/screen_main"
+        android:label="MainScreen" >
+        <action
+            android:id="@+id/action_mainScreen_to_mainPage"
+            app:destination="@id/mainPage" />
+        <action
+            android:id="@+id/action_mainScreen_to_networkScreen"
+            app:destination="@id/networkScreen"
+            app:popUpTo="@id/networkScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/savedScreen"
+        android:name="uz.infinityandro.taskguidebook.presentation.ui.screens.SavedScreen"
+        android:label="SavedScreen"
+        tools:layout="@layout/screen_saved"
+        >
+        <action
+            android:id="@+id/action_savedScreen_to_mainPage"
+            app:destination="@id/mainPage" />
+        <action
+            android:id="@+id/action_savedScreen_to_mainScreen"
+            app:destination="@id/mainScreen"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/networkScreen"
+        android:name="uz.infinityandro.taskguidebook.presentation.ui.screens.NetworkScreen"
+        android:label="NetworkScreen"
+        tools:layout="@layout/screen_network"
+        >
+        <action
+            android:id="@+id/action_networkScreen_to_savedScreen"
+            app:destination="@id/savedScreen" />
+    </fragment>
+    <fragment
+        android:id="@+id/mainPage"
+        android:name="uz.infinityandro.taskguidebook.presentation.ui.screens.MainPage"
+        android:label="MainPage"
+        tools:layout="@layout/page_main"
+        />
+</navigation>
