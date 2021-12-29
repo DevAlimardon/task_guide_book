@@ -24,6 +24,10 @@ class UserDataViewModelImpl @Inject constructor(
     override val progressLiveData = MutableLiveData<Boolean>()
 
     override fun getAllBooks() {
+        if (isConnected()){
+            connectionLiveData.postValue(true)
+        }else{
+        connectionLiveData.postValue(false)}
         userDataUseCase.getData().onEach {
             progressLiveData.postValue(true)
             it.onSuccess {data->

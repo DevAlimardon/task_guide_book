@@ -20,14 +20,14 @@ class NetworkScreen:Fragment(R.layout.screen_network) {
     private val binding by viewBinding(ScreenNetworkBinding::bind)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requireContext().registerReceiver(receiver, IntentFilter(WifiManager.WIFI_STATE_CHANGED_ACTION))
-        receiver.setListener {
-            if (it){
-
-            }else{
-
-            }
-        }
+//        requireContext().registerReceiver(receiver, IntentFilter(WifiManager.WIFI_STATE_CHANGED_ACTION))
+//        receiver.setListener {
+//            if (it){
+//
+//            }else{
+//
+//            }
+//        }
         requireActivity().onBackPressedDispatcher.addCallback(requireActivity()){
 
         }

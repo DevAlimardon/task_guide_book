@@ -32,24 +32,25 @@ class MainScreen : Fragment(R.layout.screen_main) {
     private val receiver = InternetBroadCast()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requireContext().registerReceiver(
-            receiver,
-            IntentFilter(WifiManager.WIFI_STATE_CHANGED_ACTION)
-        )
-
-        receiver.setListener {
-            if (it) {
-                viewModel.getAllBooks(count)
-            } else {
-                findNavController().navigate(R.id.networkScreen)
-            }
-        }
+//        requireContext().registerReceiver(
+//            receiver,
+//            IntentFilter(WifiManager.WIFI_STATE_CHANGED_ACTION)
+//        )
+//
+//        receiver.setListener {
+//            if (it) {
+//                viewModel.getAllBooks(count)
+//            } else {
+//                findNavController().navigate(R.id.networkScreen)
+//            }
+//        }
 
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = with(binding) {
         super.onViewCreated(view, savedInstanceState)
-
+        change()
+        observers()
         setItems()
 
 
@@ -62,7 +63,6 @@ class MainScreen : Fragment(R.layout.screen_main) {
             startActivity(intent)
         }
         recycler.adapter = adapter
-        observers()
         recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
@@ -78,7 +78,6 @@ class MainScreen : Fragment(R.layout.screen_main) {
                 }
             }
         })
-        change()
     }
 
     private fun change() {
@@ -87,6 +86,14 @@ class MainScreen : Fragment(R.layout.screen_main) {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun observers() = with(binding) {
+        viewModel.connectionLiveData.observe(requireActivity(), {
+            if (it) {
+//                viewModel.getAllBooks(count)
+                findNavController().navigate(R.id.networkScreen)
+            } else {
+
+            }
+        })
         viewModel.progressLiveData.observe(requireActivity(), {
             if (it) {
                 progress.visibility = View.VISIBLE

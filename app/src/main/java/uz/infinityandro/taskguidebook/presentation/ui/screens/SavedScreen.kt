@@ -42,18 +42,18 @@ class SavedScreen : Fragment(R.layout.screen_saved) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?)= with(binding) {
         super.onViewCreated(view, savedInstanceState)
         requireContext().registerReceiver(receiver, IntentFilter(WifiManager.WIFI_STATE_CHANGED_ACTION))
-
+        if (receiver.isConnectedOrConnecting(requireContext())){
+            viewModel.getAllBooks()
+        }
         receiver.setListener {
             if (it) {
-                dialog()
-
+                viewModel.getAllBooks()
             } else {
 
             }
@@ -91,6 +91,13 @@ class SavedScreen : Fragment(R.layout.screen_saved) {
     }
     @SuppressLint("NotifyDataSetChanged")
     private fun observers() = with(binding) {
+        viewModel.connectionLiveData.observe(requireActivity(),{
+            if (it){
+                dialog()
+
+            }else{
+            }
+        })
         viewModel.progressLiveData.observe(requireActivity(), {
             if (it) {
                 progress.visibility = View.VISIBLE
