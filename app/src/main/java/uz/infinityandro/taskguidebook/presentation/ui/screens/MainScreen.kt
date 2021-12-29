@@ -3,6 +3,7 @@ package uz.infinityandro.taskguidebook.presentation.ui.screens
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.IntentFilter
+import android.net.ConnectivityManager
 import android.net.Uri
 import android.net.wifi.WifiManager
 import android.os.Bundle
@@ -20,7 +21,6 @@ import uz.infinityandro.taskguidebook.presentation.ui.adapter.BookAdapter
 import uz.infinityandro.taskguidebook.presentation.viewModel.BookViewModel
 import uz.infinityandro.taskguidebook.presentation.viewModel.Impl.BookViewModelImpl
 import uz.infinityandro.taskguidebook.util.InternetBroadCast
-import uz.infinityandro.worldnews.utils.showToast
 
 @AndroidEntryPoint
 class MainScreen : Fragment(R.layout.screen_main) {
@@ -32,12 +32,16 @@ class MainScreen : Fragment(R.layout.screen_main) {
     private val receiver = InternetBroadCast()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requireContext().registerReceiver(receiver, IntentFilter(WifiManager.WIFI_STATE_CHANGED_ACTION))
+        requireContext().registerReceiver(
+            receiver,
+            IntentFilter(WifiManager.WIFI_STATE_CHANGED_ACTION)
+        )
+
         receiver.setListener {
-            if (it){
+            if (it) {
                 viewModel.getAllBooks(count)
-            }else{
-            findNavController().navigate(R.id.networkScreen)
+            } else {
+                findNavController().navigate(R.id.networkScreen)
             }
         }
 
@@ -52,7 +56,7 @@ class MainScreen : Fragment(R.layout.screen_main) {
     }
 
     private fun setItems() = with(binding) {
-        adapter = BookAdapter(list) {result->
+        adapter = BookAdapter(list) { result ->
             val intent = Intent(Intent.ACTION_VIEW)
             intent.setData(Uri.parse("https://guidebook.com/${result.url}"))
             startActivity(intent)

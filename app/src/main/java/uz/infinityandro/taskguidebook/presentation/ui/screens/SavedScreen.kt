@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.IntentFilter
+import android.net.ConnectivityManager
 import android.net.Uri
 import android.net.wifi.WifiManager
 import android.os.Bundle
@@ -48,26 +49,10 @@ class SavedScreen : Fragment(R.layout.screen_saved) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?)= with(binding) {
         super.onViewCreated(view, savedInstanceState)
         requireContext().registerReceiver(receiver, IntentFilter(WifiManager.WIFI_STATE_CHANGED_ACTION))
+
         receiver.setListener {
             if (it) {
-                val dialog = AlertDialog.Builder(requireContext()).create()
-                dialog.setTitle("Network")
-                dialog.setMessage("Open online mode!")
-                dialog.setCanceledOnTouchOutside(false)
-                dialog.setButton(
-                    AlertDialog.BUTTON_NEGATIVE,
-                    "Cancel",
-                    DialogInterface.OnClickListener { dialog, which ->
-                        dialog.dismiss()
-                    })
-                dialog.setButton(
-                    AlertDialog.BUTTON_POSITIVE,
-                    "Ok",
-                    DialogInterface.OnClickListener { dialog, which ->
-                        findNavController().navigate(R.id.mainScreen)
-                        dialog.dismiss()
-                    })
-                dialog.show()
+                dialog()
 
             } else {
 
@@ -84,6 +69,26 @@ class SavedScreen : Fragment(R.layout.screen_saved) {
         observers()
     }
 
+    fun dialog(){
+        val dialog = AlertDialog.Builder(requireContext()).create()
+        dialog.setTitle("Network")
+        dialog.setMessage("Open online mode!")
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.setButton(
+            AlertDialog.BUTTON_NEGATIVE,
+            "Cancel",
+            DialogInterface.OnClickListener { dialog, which ->
+                dialog.dismiss()
+            })
+        dialog.setButton(
+            AlertDialog.BUTTON_POSITIVE,
+            "Ok",
+            DialogInterface.OnClickListener { dialog, which ->
+                findNavController().navigate(R.id.mainScreen)
+                dialog.dismiss()
+            })
+        dialog.show()
+    }
     @SuppressLint("NotifyDataSetChanged")
     private fun observers() = with(binding) {
         viewModel.progressLiveData.observe(requireActivity(), {

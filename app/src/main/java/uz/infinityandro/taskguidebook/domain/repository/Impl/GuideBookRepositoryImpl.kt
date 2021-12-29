@@ -52,7 +52,11 @@ class GuideBookRepositoryImpl @Inject constructor(
             )
         }
         CoroutineScope(Dispatchers.IO).launch {
-            dao.insert(list2)
+            if (dao.getAllUser().isNullOrEmpty()) {
+                dao.insert(list2)
+            }else{
+
+            }
         }
     }
 }
